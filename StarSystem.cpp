@@ -143,8 +143,7 @@ bool StarSystem::PlanetsTooClose(double lesserDist, double greaterDist,
     
     double q = 1.2009370 * pow(mu1 + mu2, 1.0/3.0); 
     double relativeDifference = (greaterDist - lesserDist) / lesserDist;
-    return relativeDifference <= 
-        2.0*q * (1.0 + q) - (11.0*greaterDist + 7.0*lesserDist) / (6.2402515*q);
+    return relativeDifference <= 2.0*q * (1.0 + q) - (11.0*mu1 + 7.0*mu2) / (6.2402515*q);
 }
 
 
@@ -373,10 +372,10 @@ void StarSystem::CreatePlanets()
             if (PlanetsTooClose(semimajorAxes[i-1], semimajorAxes[i],
                                 masses[i-1]*kMassOfEarth, masses[i]*kMassOfEarth, mStar->mMass)) {
                 unsigned lesserMassIdx = (masses[i-1] < masses[i]) ? (i-1) : i;
-                semimajorAxes.erase(semimajorAxes.end()+lesserMassIdx);
-                masses.erase(masses.end()+lesserMassIdx);
-                temperatures.erase(temperatures.end()+lesserMassIdx);
-                densities.erase(densities.end()+lesserMassIdx);
+                semimajorAxes.erase(semimajorAxes.begin()+lesserMassIdx);
+                masses.erase(masses.begin()+lesserMassIdx);
+                temperatures.erase(temperatures.begin()+lesserMassIdx);
+                densities.erase(densities.begin()+lesserMassIdx);
                 mPrimeJovianOrbitNumber--;
             }
             else {
